@@ -4,6 +4,7 @@ namespace Database\Seeders;
 
 use App\Models\Player;
 use App\Models\Position;
+use App\Models\Team;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Database\Eloquent\Model;
@@ -21,10 +22,11 @@ class PlayerSeeder extends Seeder
     {
         $positions = Position::query()->pluck('id', 'name');
         $players = config('players', [])['real-madrid'];
-        Model::unguarded(function () use ($players, $positions) {
+        $teamId = Team::query()->where('slug', 'real-madrid')->value('id');
+        Model::unguarded(function () use ($players, $positions, $teamId) {
 
             foreach ($players as $player) {
-                $this->seedPlayer($player, $positions);
+                $this->seedPlayer($player, $positions, $teamId);
             }
             // foreach ($teams as $team) {
             //     if (! is_array($team) || ! isset($team['starters'])) {
@@ -41,7 +43,7 @@ class PlayerSeeder extends Seeder
     /**
      * @param  \Illuminate\Support\Collection<string, int>  $positions
      */
-    private function seedPlayer(array $row, $positions): void
+    private function seedPlayer(array $row, $positions, ?int $teamId): void
     {
         $positionName = $row['position'] ?? null;
         if (! $positionName || ! isset($positions[$positionName])) {
@@ -53,6 +55,7 @@ class PlayerSeeder extends Seeder
         $attributes = collect($row)
             ->except(self::SQUAD_KEYS)
             ->put('position_id', $positions[$positionName])
+            ->when($teamId !== null, fn ($c) => $c->put('team_id', $teamId))
             ->all();
 
         Player::query()->updateOrCreate(

@@ -23,14 +23,15 @@ class DatabaseSeeder extends Seeder
             'email' => 'juanhm.co93@gmail.com',
             'password' => Hash::make('juan1234'),
         ]);
-        // $this->call([
-        //     CountrySeeder::class,
-        //     PositionSeeder::class,
-        //     LeagueSeeder::class,
-        //     TeamSeeder::class,
-        //     PlayerSeeder::class,
-        //     // GameSeeder::class,
-        //     // GoalSeeder::class,
-        // ]);
+        $this->call([
+            CountrySeeder::class,
+            PositionSeeder::class,
+            LeagueSeeder::class,
+            TeamSeeder::class,
+            PlayerSeeder::class,
+            // TeamWithPlayersSeeder::class, // optional: factory demo (requires PositionSeeder first)
+            // GameSeeder::class,
+            // GoalSeeder::class,
+        ]);
     }
 }

@@ -18,7 +18,8 @@ class PositionFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => 'POS-'.fake()->unique()->numerify('######'),
+            'description' => fake()->optional()->sentence(),
         ];
     }
 }

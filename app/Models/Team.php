@@ -11,7 +11,7 @@ class Team extends Model
     /** @use HasFactory<\Database\Factories\TeamFactory> */
     use HasFactory;
 
-    #[Fillable(['name', 'slug', 'code', 'logo', 'league_id', 'division_id', 'country_id'])]
+    #[Fillable(['name', 'slug', 'code', 'logo', 'country_id'])]
 
     public function seasons()
     {

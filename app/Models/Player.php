@@ -11,15 +11,16 @@ class Player extends Model
     /** @use HasFactory<\Database\Factories\PlayerFactory> */
     use HasFactory;
 
-    #[Fillable(['name', 'lastname', 'nickname', 'slug', 'code', 'photo', 'date_of_birth', 'nationality', 'height', 'weight', 'foot', 'position_id'])]
+    #[Fillable(['name', 'lastname', 'nickname', 'slug', 'code', 'photo', 'date_of_birth', 'nationality', 'height', 'weight', 'foot', 'position_id', 'team_id'])]
+
     public function position()
     {
         return $this->belongsTo(Position::class);
     }
 
-    public function teams()
+    public function team()
     {
-        return $this->hasMany(Team::class);
+        return $this->belongsTo(Team::class);
     }
 
     public function playerTeamSeasons()
