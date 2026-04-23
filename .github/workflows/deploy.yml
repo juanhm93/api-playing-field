@@ -2,37 +2,36 @@ name: api-playing-field deployment
 
 on:
   push:
-    branches: [ "main" ]
+    branches: ["main"]
   pull_request:
-    branches: [ "main" ]
+    branches: ["main"]
 
 jobs:
   laravel-tests:
-
     runs-on: ubuntu-latest
     services:
       mysql: mysql:8.0
     steps:
-    - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
-      with:
-        php-version: '8.3'
-    - uses: actions/checkout@v4
-    - name: Copy .env
-      run: php -r "file_exists('.env') || copy('.env.example', '.env');"
-    - name: Install Dependencies
-      run: composer install -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
-    - name: Generate key
-      run: php artisan key:generate
-    - name: Clear Config and Cache
-      run: |
-        php artisan config:cache
-        php artisan route:clear
-    - name: Directory Permissions
-      run: chmod -R 777 storage bootstrap/cache
-    - name: Deploy to Server
-      uses: SamKirkland/FTP-Deploy-Action@v4.3.5
-      with:
-        server: ${{ secrets.FTP_API_FIELD_SERVER }}
-        username: ${{ secrets.FTP_API_FIELD_USERNAME }}
-        password: ${{ secrets.FTP_API_FIELD_PASSWORD }}
-        server-dir: /
+      - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
+        with:
+          php-version: "8.3"
+      - uses: actions/checkout@v4
+      - name: Copy .env
+        run: php -r "file_exists('.env') || copy('.env.example', '.env');"
+      - name: Install Dependencies
+        run: composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
+      - name: Generate key
+        run: php artisan key:generate
+      - name: Clear Config and Cache
+        run: |
+          php artisan config:cache
+          php artisan route:clear
+      - name: Directory Permissions
+        run: chmod -R 777 storage bootstrap/cache
+      - name: Deploy to Server
+        uses: SamKirkland/FTP-Deploy-Action@v4.3.5
+        with:
+          server: ${{ secrets.FTP_API_FIELD_SERVER }}
+          username: ${{ secrets.FTP_API_FIELD_USERNAME }}
+          password: ${{ secrets.FTP_API_FIELD_PASSWORD }}
+          server-dir: /
