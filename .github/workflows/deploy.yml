@@ -19,7 +19,7 @@ jobs:
       - name: Install Dependencies
         run: composer update -q --no-ansi --no-interaction --no-scripts --no-progress --prefer-dist
       - name: Run migrations the database
-        run: php artisan migrate
+        run: php artisan migrate --force --seed
       - name: Clear Config and Cache
         run: |
           php artisan config:cache
