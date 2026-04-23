@@ -10,7 +10,15 @@ jobs:
   laravel-tests:
     runs-on: ubuntu-latest
     services:
-      mysql: mysql:8.0
+      mysql:
+        image: mysql:8.0
+        env:
+          MYSQL_ROOT_PASSWORD: ${{ secrets.DB_API_FIELD_PASSWORD }}
+          MYSQL_DATABASE: ${{ secrets.DB_API_FIELD_DATABASE }}
+          MYSQL_USER: ${{ secrets.DB_API_FIELD_USER }}
+          MYSQL_PASSWORD: ${{ secrets.DB_API_FIELD_PASSWORD }}
+        ports:
+          - 3306:3306
     steps:
       - uses: shivammathur/setup-php@15c43e89cdef867065b0213be354c2841860869e
         with:
