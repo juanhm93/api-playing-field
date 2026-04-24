@@ -9,14 +9,6 @@ on:
 jobs:
   laravel-tests:
     runs-on: ubuntu-latest
-    # Valores que deben ganar a .env.example (sqlite) en CI; Laravel no pisa variables ya definidas.
-    env:
-      DB_CONNECTION: mysql
-      DB_HOST: 127.0.0.1
-      DB_PORT: 3306
-      DB_DATABASE: ${{ secrets.DB_API_FIELD_DATABASE }}
-      DB_USERNAME: ${{ secrets.DB_API_FIELD_USER }}
-      DB_PASSWORD: ${{ secrets.DB_API_FIELD_PASSWORD }}
     services:
       mysql:
         image: mysql:8.0
