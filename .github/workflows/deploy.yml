@@ -46,10 +46,7 @@ jobs:
           php artisan route:clear
       - name: Directory Permissions
         run: chmod -R 777 storage bootstrap/cache
-      # Solo en push a main: en PR (sobre todo desde forks) los secrets no existen y SSH falla con "missing server host".
-      # El .env del CI es solo para tests; si FTP lo sube, pisa el .env real en Banahosting.
       - name: Deploy to Server
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
         uses: SamKirkland/FTP-Deploy-Action@v4.3.5
         with:
           server: ${{ secrets.FTP_API_FIELD_SERVER }}
@@ -61,13 +58,3 @@ jobs:
             **/.git*/**
             .env
             **/.env
-      - name: Run migrations on production
-        if: github.event_name == 'push' && github.ref == 'refs/heads/main'
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SSH_HOST }}
-          username: ${{ secrets.SSH_USERNAME }}
-          password: ${{ secrets.SSH_PASSWORD }}
-          script: |
-            cd ${{ vars.DEPLOY_PATH }}
-            php artisan migrate --force
