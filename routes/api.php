@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\TeamController;
 Route::post('/login', [LoginController::class, 'store']);
 
 Route::group(['middleware' => 'auth:sanctum'], function () {
+    Route::get('me', fn(Request $r) => $r->user());
     Route::apiResource('countries', CountryController::class);
     Route::apiResource('leagues', LeagueController::class);
     Route::apiResource('teams', TeamController::class)->only(['index', 'store', 'show']);
