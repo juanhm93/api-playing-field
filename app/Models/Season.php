@@ -20,6 +20,7 @@ class Season extends Model
     public function teams()
     {
         return $this->belongsToMany(Team::class, 'team_season')
+            ->withPivot(['id', 'league_id', 'lineup_id'])
             ->withTimestamps();
     }
 }

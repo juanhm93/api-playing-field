@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\TeamSeasonController;
+use App\Http\Controllers\Api\PlayerTeamSeasonController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -19,4 +21,9 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('countries', CountryController::class);
     Route::apiResource('leagues', LeagueController::class);
     Route::apiResource('teams', TeamController::class)->only(['index', 'store', 'show']);
+
+    Route::get('teams/{team}/seasons/{season}', [TeamSeasonController::class, 'show']);
+
+    Route::post('player-team-seasons/transfer', [PlayerTeamSeasonController::class, 'transfer']);
+    Route::apiResource('player-team-seasons', PlayerTeamSeasonController::class);
 });

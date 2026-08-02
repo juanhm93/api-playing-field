@@ -13,6 +13,8 @@ class TeamSeason extends Model
     protected $fillable = [
         'team_id',
         'season_id',
+        'league_id',
+        'lineup_id',
     ];
 
     public function team(): BelongsTo
@@ -23,6 +25,16 @@ class TeamSeason extends Model
     public function season(): BelongsTo
     {
         return $this->belongsTo(Season::class);
+    }
+
+    public function league(): BelongsTo
+    {
+        return $this->belongsTo(League::class);
+    }
+
+    public function lineup(): BelongsTo
+    {
+        return $this->belongsTo(Lineup::class);
     }
 
     public function playerTeamSeasons(): HasMany

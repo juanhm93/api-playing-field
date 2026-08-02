@@ -18,7 +18,7 @@ class LineupFactory extends Factory
     public function definition(): array
     {
         return [
-            //
+            'name' => fake()->randomElement(['4-4-2', '4-3-3', '3-5-2', '4-2-3-1', '5-3-2']),
         ];
     }
 }
