@@ -2,16 +2,16 @@
 
 namespace App\Models;
 
+use Database\Factories\TeamFactory;
+use Illuminate\Database\Eloquent\Attributes\Fillable;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\Attributes\Fillable;
 
+#[Fillable(['name', 'slug', 'code', 'logo', 'country_id'])]
 class Team extends Model
 {
-    /** @use HasFactory<\Database\Factories\TeamFactory> */
+    /** @use HasFactory<TeamFactory> */
     use HasFactory;
-
-    #[Fillable(['name', 'slug', 'code', 'logo', 'country_id'])]
 
     public function seasons()
     {

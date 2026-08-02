@@ -4,13 +4,20 @@ namespace App\Http\Controllers\Api;
 
 use App\Http\Controllers\Controller;
 use App\Models\Player;
+use App\Models\Season;
 use App\Models\Team;
+use App\Services\TeamSeasonService;
+use Illuminate\Http\JsonResponse;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\DB;
 use Illuminate\Support\Str;
 
 class TeamController extends Controller
 {
+    public function __construct(
+        private readonly TeamSeasonService $teamSeasonService,
+    ) {}
+
     /**
      * Display a listing of the resource.
      */
@@ -88,6 +95,21 @@ class TeamController extends Controller
             'success' => true,
             'message' => 'Team fetched successfully',
             'data' => $team,
+        ], 200);
+    }
+
+    /**
+     * Team squad for a given season (starters / substitutes, or clear format).
+     */
+    public function showBySeason(Request $request, Team $team, Season $season): JsonResponse
+    {
+        $format = $request->query('format');
+        $data = $this->teamSeasonService->getSquad($team, $season, is_string($format) ? $format : null);
+
+        return response()->json([
+            'success' => true,
+            'message' => 'Team season squad fetched successfully',
+            'data' => $data,
         ], 200);
     }
 }
