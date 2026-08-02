@@ -19,16 +19,6 @@ class Team extends Model
             ->withTimestamps();
     }
 
-    public function league()
-    {
-        return $this->belongsTo(League::class);
-    }
-
-    public function division()
-    {
-        return $this->belongsTo(Division::class);
-    }
-
     public function country()
     {
         return $this->belongsTo(Country::class);
@@ -66,8 +56,4 @@ class Team extends Model
         return $this->hasMany(PlayerSeasonStat::class);
     }
 
-    public function lineups()
-    {
-        return $this->hasMany(Lineup::class);
-    }
 }

@@ -4,7 +4,7 @@ Documento de planificación y registro de acciones para los endpoints de consult
 
 **Fecha:** 2026-08-02  
 **Rama de trabajo:** `cursor/equipo-temporada-transferencias-1b35`  
-**Estado:** Planificación completada — implementación pendiente por fases
+**Estado:** En implementación — transferencias **pendiente** (sección 7)
 
 ---
 
@@ -15,7 +15,7 @@ Construir una API REST que permita:
 1. **Consultar un equipo en una temporada** pasando `team_id` y `season_id`, devolviendo la plantilla con titulares y suplentes separados (formato por defecto) o todos juntos (`format=clear`).
 2. **Incluir datos relacionados** del equipo en esa temporada: formación (`lineup`), liga, país, temporada, etc.
 3. **Gestionar la asignación de jugadores** a un equipo por temporada (alta inicial en plantilla).
-4. **CRUD completo de transferencias** para mover jugadores entre equipos o registrar su primera incorporación.
+4. ~~**CRUD completo de transferencias**~~ → **PENDIENTE** (ver sección 7). No se implementa en esta iteración.
 
 Toda la lógica de negocio debe vivir en **servicios** que consumen **repositorios**, inyectados en controladores delgados.
 
@@ -317,6 +317,8 @@ Campos editables: `number`, `is_started`.
 
 ## 7. Endpoints: CRUD de transferencias
 
+> **Estado: PENDIENTE** — Diseño documentado a continuación. No implementar hasta nueva iteración. La asignación de jugadores (sección 6) cubre la incorporación inicial a plantilla.
+
 ### Rutas
 
 ```
@@ -380,34 +382,33 @@ Soft delete del registro `transfers`. **No revierte automáticamente** la planti
 
 ### Fase 0 — Preparación (modelos y migración)
 
-- [ ] Migración `create_transfers_table`
-- [ ] Modelo `Transfer` con relaciones y soft deletes
-- [ ] Completar `TeamSeason`, `Lineup`
-- [ ] Ajustar relaciones incorrectas en `Team`
-- [ ] Seeder mínimo: `LineupSeeder`, `SeasonSeeder`, registros `team_season` de prueba
+- [ ] ~~Migración `create_transfers_table`~~ **PENDIENTE**
+- [ ] ~~Modelo `Transfer`~~ **PENDIENTE**
+- [x] Completar `TeamSeason`, `Lineup`
+- [x] Ajustar relaciones incorrectas en `Team`
+- [x] Seeder mínimo: `LineupSeeder`, `SeasonSeeder`, `TeamSeasonSeeder`
 
 ### Fase 1 — Repositorios
 
-- [ ] Interfaces en `app/Repositories/Contracts/`
-- [ ] `TeamSeasonRepository`: `findByTeamAndSeason()`, `findOrCreate()`
-- [ ] `PlayerTeamSeasonRepository`: CRUD + `getByTeamSeason()`, `existsInRoster()`
-- [ ] `TransferRepository`: CRUD + filtros
-- [ ] Bindings en `AppServiceProvider`
+- [x] Interfaces en `app/Repositories/Contracts/`
+- [x] `TeamSeasonRepository`: `findByTeamAndSeason()`, `findOrCreate()`
+- [x] `PlayerTeamSeasonRepository`: CRUD + `getByTeamSeason()`, `existsInRoster()`
+- [ ] ~~`TransferRepository`~~ **PENDIENTE**
+- [x] Bindings en `AppServiceProvider`
 
 ### Fase 2 — Servicios
 
-- [ ] `TeamSeasonService::getTeamBySeason(Team, Season, ?leagueId, format)`
-- [ ] `PlayerAssignmentService`: assign, update, remove, list
-- [ ] `TransferService`: create, update, delete, list (con transacciones)
-- [ ] Método privado compartido `syncRosterMembership()` entre assignment y transfer
+- [x] `TeamSeasonService::getTeamBySeason(Team, Season, ?leagueId, format)`
+- [x] `PlayerAssignmentService`: assign, update, remove, list
+- [ ] ~~`TransferService`~~ **PENDIENTE**
 
 ### Fase 3 — Controladores y rutas
 
-- [ ] `TeamSeasonController@show`
-- [ ] `PlayerAssignmentController` (apiResource anidado o rutas explícitas)
-- [ ] `TransferController` (apiResource)
-- [ ] Registrar rutas en `routes/api.php` bajo `auth:sanctum`
-- [ ] Validación inline en controladores (patrón existente del proyecto)
+- [x] `TeamSeasonController@show`
+- [x] `PlayerAssignmentController` (rutas anidadas)
+- [ ] ~~`TransferController`~~ **PENDIENTE**
+- [x] Registrar rutas en `routes/api.php` bajo `auth:sanctum`
+- [x] Validación inline en controladores (patrón existente del proyecto)
 
 ### Fase 4 — Respuestas y formato
 
@@ -488,7 +489,7 @@ is_started: boolean
 | 2026-08-02 | Diseño de CRUD de asignación (`player_team_season`) y transferencias |
 | 2026-08-02 | Esquema propuesto para tabla `transfers` |
 | 2026-08-02 | Plan por fases (0–6) documentado en este archivo |
-| 2026-08-02 | Rama `cursor/equipo-temporada-transferencias-1b35` creada |
+| 2026-08-02 | Implementación sin transferencias: modelos, repositorios, servicios, controladores, rutas y seeders |
 
 ---
 
@@ -520,4 +521,5 @@ curl -X POST -H "Authorization: Bearer {token}" \
 
 ## 13. Próximo paso recomendado
 
-Iniciar **Fase 0**: migración `transfers`, completar modelos `TeamSeason` y `Lineup`, y luego **Fase 1** con `TeamSeasonRepository` + `TeamSeasonService` + primer endpoint `GET` para validar el flujo end-to-end antes de transferencias.
+1. Probar endpoints de equipo por temporada y asignación de jugadores.
+2. **Pendiente:** implementar transferencias (sección 7) cuando se retome.

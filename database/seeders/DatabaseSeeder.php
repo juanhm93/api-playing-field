@@ -27,8 +27,11 @@ class DatabaseSeeder extends Seeder
             CountrySeeder::class,
             PositionSeeder::class,
             LeagueSeeder::class,
+            LineupSeeder::class,
+            SeasonSeeder::class,
             TeamSeeder::class,
             PlayerSeeder::class,
+            TeamSeasonSeeder::class,
             // TeamWithPlayersSeeder::class, // optional: factory demo (requires PositionSeeder first)
             // GameSeeder::class,
             // GoalSeeder::class,

@@ -6,6 +6,8 @@ use App\Http\Controllers\Api\LoginController;
 use App\Http\Controllers\Api\CountryController;
 use App\Http\Controllers\Api\LeagueController;
 use App\Http\Controllers\Api\TeamController;
+use App\Http\Controllers\Api\TeamSeasonController;
+use App\Http\Controllers\Api\PlayerAssignmentController;
 
 // Route::get('/user', function (Request $request) {
 //     return $request->user();
@@ -19,4 +21,11 @@ Route::group(['middleware' => 'auth:sanctum'], function () {
     Route::apiResource('countries', CountryController::class);
     Route::apiResource('leagues', LeagueController::class);
     Route::apiResource('teams', TeamController::class)->only(['index', 'store', 'show']);
+    Route::get('teams/{team}/seasons/{season}', [TeamSeasonController::class, 'show']);
+    Route::get('teams/{team}/seasons/{season}/players', [PlayerAssignmentController::class, 'index']);
+    Route::post('teams/{team}/seasons/{season}/players', [PlayerAssignmentController::class, 'store']);
+    Route::get('teams/{team}/seasons/{season}/players/{player}', [PlayerAssignmentController::class, 'show']);
+    Route::put('teams/{team}/seasons/{season}/players/{player}', [PlayerAssignmentController::class, 'update']);
+    Route::patch('teams/{team}/seasons/{season}/players/{player}', [PlayerAssignmentController::class, 'update']);
+    Route::delete('teams/{team}/seasons/{season}/players/{player}', [PlayerAssignmentController::class, 'destroy']);
 });
